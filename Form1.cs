@@ -10,37 +10,18 @@ namespace ApiEjercicio
     public partial class FormClima : Form
     {
 
-        private const string ApiKey = "aca coloco mi api key";
-        private const string ApiUrl = "Aca va la url";
+        private const string ApiKey = "";
+        private const string ApiUrl = "https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}&units=metric&lang=es";
         private readonly HttpClient _httpClient = new HttpClient();
 
        
         public FormClima()
         {
             InitializeComponent();
-            InicializarControles();
+            
         }
 
-        private void InicializarControles()
-        {
-            this.Text = "Aplicación del Clima";
-            this.Size = new Size(400, 350);
-
-            lblError = new Label() { Text = "", AutoSize = true, Location = new Point(10, 10), ForeColor = Color.Red };
-            txtBusqueda = new TextBox() { Location = new Point(10, 30), Width = 200 };
-            btnBuscar = new Button() { Text = "Buscar Clima", Location = new Point(220, 30) };
-            lblCiudad = new Label() { Text = "Ciudad:", AutoSize = true, Location = new Point(10, 70) };
-            lblTemperatura = new Label() { Text = "Temperatura:", AutoSize = true, Location = new Point(10, 90) };
-            lblDescripcion = new Label() { Text = "Descripción:", AutoSize = true, Location = new Point(10, 110) };
-            lblHumedad = new Label() { Text = "Humedad:", AutoSize = true, Location = new Point(10, 130) };
-            lblViento = new Label() { Text = "Viento:", AutoSize = true, Location = new Point(10, 150) };
-            imgIconoClima = new PictureBox() { SizeMode = PictureBoxSizeMode.Zoom, Size = new Size(100, 100), Location = new Point(250, 70) };
-
-            this.Controls.AddRange(new Control[] { lblError, txtBusqueda, btnBuscar, lblCiudad, lblTemperatura, lblDescripcion, lblHumedad, lblViento, imgIconoClima });
-
-            btnBuscar.Click += btnBuscar_Click;
-        }
-
+       
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
             string ciudad = txtBusqueda.Text.Trim();
@@ -81,12 +62,17 @@ namespace ApiEjercicio
                     {
                         imgIconoClima.Image = null;
                     }
+
+                    // --- NUEVO: Obtener y mostrar la recomendación ---
+                    string recomendacion = await recomendador.ObtenerRecomendacion(climaData.weather?[0]?.description ?? "");
+                    lblRecomendacion.Text = recomendacion;
                 }
                 else
                 {
                     lblError.Text = "No se encontraron datos para la ciudad ingresada.";
                     LimpiarDatosClima();
                 }
+
             }
             catch (HttpRequestException ex)
             {
@@ -103,6 +89,7 @@ namespace ApiEjercicio
                 lblError.Text = $"Ocurrió un error inesperado: {ex.Message}";
                 LimpiarDatosClima();
             }
+
         }
 
         private async Task CargarIconoClima(string iconCode)
@@ -131,6 +118,20 @@ namespace ApiEjercicio
             lblViento.Text = "Viento:";
             imgIconoClima.Image = null;
         }
+
+        private void imgIconoClima_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void lblRecomendacion_Click(object sender, EventArgs e)
+        {
+            
+            MessageBox.Show("¡Haz hecho clic en la recomendación!");
+        }
+        private apirecomendacion recomendador = new apirecomendacion();
+
+
+
     }
 
 
