@@ -9,3 +9,6 @@
 4. Me apoye copiando la linea de error y preguntando a que se debia y como podria solucionarlo.
 
    ![Captura de pantalla 2025-05-09 225930](https://github.com/user-attachments/assets/2f8ae072-bec0-4c75-8c3b-a6ceb0b0cf27)
+Nuevo intento
+
+![image](https://github.com/user-attachments/assets/a6c0aa51-4da7-414a-843a-847cdade6a90)
